@@ -1,6 +1,7 @@
 import pygame
 from forestofsquirrels.squirrels import Seller, Player
 from forestofsquirrels.core.forest import Forest
+from forestofsquirrels.trees import Tree
 
 
 def run_game():
@@ -8,7 +9,8 @@ def run_game():
     clock = pygame.time.Clock()
     forest = Forest()
     s = Player(forest, 320, 240)
-    Seller(forest,25,25)
+    Seller(forest, 25, 25)
+    Tree(forest, 200, 900, 200, 400)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
