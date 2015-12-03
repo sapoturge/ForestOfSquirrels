@@ -1,5 +1,5 @@
 import pygame
-from forestofsquirrels.squirrels import Squirrel, Seller
+from forestofsquirrels.squirrels import Seller, Player
 from forestofsquirrels.core.forest import Forest
 
 
@@ -7,7 +7,7 @@ def run_game():
     window = pygame.display.set_mode((640, 480))
     clock = pygame.time.Clock()
     forest = Forest()
-    s = Squirrel(forest, 320, 240)
+    s = Player(forest, 320, 240)
     Seller(forest,25,25)
     while True:
         for event in pygame.event.get():
