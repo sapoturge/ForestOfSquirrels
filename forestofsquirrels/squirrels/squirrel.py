@@ -1,5 +1,6 @@
 import pygame
 import math
+from forestofsquirrels.trees import Tree
 
 pygame.init()
 
@@ -52,6 +53,7 @@ class SpeechBubble(pygame.sprite.Sprite):
 class Squirrel(pygame.sprite.Sprite):
     """ Base class for squirrels.
     """
+
     def __init__(self, forest, x, y):
         self.x = x
         self.y = y
@@ -70,6 +72,7 @@ class Squirrel(pygame.sprite.Sprite):
         self.rightimg = pygame.transform.flip(self.leftimg, True, False)
         self.image = self.leftimg
         self.rect = self.image.get_rect()
+        self.colliderect = self.rect
         self.level = 0
         pygame.sprite.Sprite.__init__(self, forest)
         self.forest = forest
@@ -138,4 +141,11 @@ class Squirrel(pygame.sprite.Sprite):
             self.y -= 2
         elif self.hoppingDown:
             self.y += 2
+        self.colliderect = pygame.Rect(self.x, self.y, 18, 18)
+        for tree in filter(lambda s: isinstance(s, Tree), self.forest.sprites()):
+            if tree.colliderect.colliderect(self.colliderect):
+                if self.hoppingDown:
+                    self.colliderect.bottom = tree.colliderect.top
+                elif self.hoppingUp:
+                    self.colliderect.top = tree.colliderect.bottom
         self.rect = pygame.Rect(self.x + self.xoffset, self.y + self.yoffset, 18, 18)

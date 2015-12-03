@@ -10,6 +10,9 @@ class Tree(pygame.sprite.Sprite):
         self.height = height
         self.image = pygame.image.load("forestofsquirrels/graphics/tree.png").convert_alpha()
         self.rect = self.image.get_rect()
+        self.colliderect = self.rect.copy()
+        self.colliderect.height = self.height / 2
+        self.colliderect.bottom = self.rect.bottom
 
     def update(self):
         self.rect.x = self.x - self.width / 2
