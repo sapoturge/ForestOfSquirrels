@@ -14,12 +14,25 @@ Make sure all dependencies are installed.
 #### From zip
 1. Open a terminal/command prompt window.
 2. Navigate to where you put the zip file.
-2. Type `python ForestOfSquirrels.zip`
+3. Type `python ForestOfSquirrels.zip`
 
 #### From source
 1. Open a terminal/command prompt window.
 2. Navigate to where you unpacked the source.
-2. Type `python ForestOfSquirrels/__main__.py`
+3. Type `python ForestOfSquirrels/__main__.py`
+
+### To Contribute
+
+1. Clone this repository.
+2. Read the BUGS and SUGGESTIONS files.
+3. Pick something to add or fix.
+4. Create a new branch.
+5. Add/fix whatever you decided on.
+6. Test it.
+7. Repeat steps 5-6 until your problem is solved, preferably without breaking anything else.
+8. Update BUGS and SUGGESTIONS files.
+9. Create a pull request.
+10. Repeat from step 2
 
 ## Dependencies
 
