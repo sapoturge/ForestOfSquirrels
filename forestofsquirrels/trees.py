@@ -13,4 +13,4 @@ class Tree(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.x = self.x - self.width / 2
-        self.rect.y = self.y - self.height
+        self.rect.y = self.y - self.height + 20

@@ -28,8 +28,10 @@ class SpeechBubble(pygame.sprite.Sprite):
             self.rect.bottomleft = self.squirrel.rect.topright
             self.image.blit(self.bottomright, (self.rect.width - 4, self.rect.height - 4))
         self.updated = 0
+        self.y = self.squirrel.y
 
     def update(self):
+        self.y = self.squirrel.y
         image = self.font.render(self.message, False, (0, 0, 0), (255, 255, 255))
         self.rect = image.get_rect().inflate(4, 4)
         self.image = pygame.Surface((self.rect.width, self.rect.height))
@@ -48,6 +50,8 @@ class SpeechBubble(pygame.sprite.Sprite):
 
 
 class Squirrel(pygame.sprite.Sprite):
+    """ Base class for squirrels.
+    """
     def __init__(self, forest, x, y):
         self.x = x
         self.y = y

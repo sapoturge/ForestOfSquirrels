@@ -13,17 +13,17 @@ Make sure all dependencies are installed.
 
 #### From zip
 1. Open a terminal/command prompt window.
-2. Type
-        python ForestOfSquirrels.zip
+2. Navigate to where you put the zip file.
+2. Type `python ForestOfSquirrels.zip`
 
 #### From source
-1. Open a terminal/command prompt window
-2. Type 
-        python ForestOfSquirrels/__main__.py
+1. Open a terminal/command prompt window.
+2. Navigate to where you unpacked the source.
+2. Type `python ForestOfSquirrels/__main__.py`
 
 ## Dependencies
 
-+ Python (Tested with 3.5, but should work for other versions)
++ Python (Tested with 3.5 and 2.7, but should work for other versions)
 + Pygame
 
 ## The Team
