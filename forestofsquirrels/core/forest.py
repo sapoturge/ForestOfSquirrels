@@ -10,5 +10,6 @@ class Forest(pygame.sprite.LayeredUpdates):
     def update(self):
         for s in self.sprites():
             s.update()
+        for s in self.sprites():
             s.rect.x -= self.camera_x
             s.rect.y -= self.camera_y
