@@ -13,3 +13,7 @@ class Forest(pygame.sprite.LayeredUpdates):
         for s in self.sprites():
             s.rect.x -= self.camera_x
             s.rect.y -= self.camera_y
+
+    def draw(self, surface):
+        for spr in sorted(self.sprites(), key=lambda s: s.y):
+            surface.blit(spr.image, spr.rect)

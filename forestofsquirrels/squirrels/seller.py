@@ -3,6 +3,8 @@ import math
 
 
 class Seller(Squirrel):
+    """ Annoying squirrel that says "Hello!" Whenever you get too close to him.
+    """
     def update(self):
         Squirrel.update(self)
         for squirrel in self.forest.sprites():
