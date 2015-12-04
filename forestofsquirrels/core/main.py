@@ -11,7 +11,7 @@ def run_game():
     forest = Forest()
     s = Player(forest, 320, 240)
     Seller(forest, 25, 25)
-    Tree(forest, 200, 600, 200, 400)
+    Tree(forest, 200, 600)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
