@@ -146,9 +146,11 @@ class Squirrel(pygame.sprite.Sprite):
             if tree.colliderect.colliderect(self.colliderect):
                 overlap = self.colliderect.union(tree.colliderect)
                 xoffset, yoffset = overlap.width, overlap.height
-                if self.hoppingDown and (xoffset > yoffset or not (self.hoppingLeft or self.hoppingRight)):
+                if self.hoppingDown and self.colliderect.bottom < tree.colliderect.bottom and (
+                        xoffset > yoffset or not (self.hoppingLeft or self.hoppingRight)):
                     self.colliderect.bottom = tree.colliderect.top
-                elif self.hoppingUp and (xoffset > yoffset or not (self.hoppingLeft or self.hoppingRight)):
+                elif self.hoppingUp and self.colliderect.top > tree.colliderect.top and (
+                        xoffset > yoffset or not (self.hoppingLeft or self.hoppingRight)):
                     self.colliderect.top = tree.colliderect.bottom
                 elif self.hoppingLeft and (xoffset < yoffset or not (self.hoppingUp or self.hoppingDown)):
                     self.colliderect.left = tree.colliderect.right
