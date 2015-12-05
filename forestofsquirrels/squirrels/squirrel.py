@@ -126,6 +126,13 @@ class Squirrel(pygame.sprite.Sprite):
     def say(self, message):
         SpeechBubble(self.forest, self, message)
 
+    def enter_hole(self, window, clock):
+        if self.climbing:
+            for hole in self.climbing[0].holes:
+                if hole[0] == self.climbing[1] and hole[1] < self.z < hole[2]:
+                    area = __import__("forestofsquirrels.world.areas." + hole[3], fromlist=["main"])
+                    area.main(window, clock)
+
     def update(self):
         if not self.climbing:
             self.yoffset = 0
@@ -136,7 +143,7 @@ class Squirrel(pygame.sprite.Sprite):
                     self.hoppingDown = self.goingDown
                     self.hoppingUp = self.goingUp
                 self.hopstep += 1
-                self.yoffset -= math.sin(self.hopstep * math.pi / 10) * 10
+                self.yoffset = -math.sin(self.hopstep * math.pi / 10) * 10
                 if self.hopstep == 10:
                     if self.goingRight or self.goingLeft or self.goingUp or self.goingDown:
                         self.hopstep = 0
@@ -182,7 +189,7 @@ class Squirrel(pygame.sprite.Sprite):
                 if self.climbing[1] == "right":
                     self.z -= 2
                     self.image = pygame.transform.rotate(self.rightrunimg, -90)
-                    if self.z <= 0:
+                    if self.z <= 18:
                         self.climbing = None
                         self.image = self.rightrunimg
                 else:
@@ -197,8 +204,8 @@ class Squirrel(pygame.sprite.Sprite):
                 else:
                     self.z -= 2
                     self.image = pygame.transform.rotate(self.leftrunimg, 90)
-                    if self.z <= 0:
+                    if self.z <= 18:
                         self.climbing = None
                         self.image = self.leftrunimg
-            self.yoffset = -self.z
+            self.yoffset = -self.z + 18
         self.rect = pygame.Rect(self.x + self.xoffset, self.y + self.yoffset, 18, 18)

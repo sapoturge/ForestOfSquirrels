@@ -45,7 +45,7 @@ class Tree(pygame.sprite.Sprite):
                     else:
                         sx = x - int(trunk_width) / 2
                     s = Squirrel(forest, sx, y)
-                    s.z = z
+                    s.z = int(z)
                     s.climbing = [tree, side]
                 elif mode == "hole":
                     side, bottom, top, area = line.split(",")
