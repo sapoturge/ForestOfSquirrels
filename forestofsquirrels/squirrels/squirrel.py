@@ -57,6 +57,7 @@ class Squirrel(pygame.sprite.Sprite):
     def __init__(self, forest, x, y):
         self.x = x
         self.y = y
+        self.z = 0
         self.xoffset = 0
         self.yoffset = 0
         self.climbing = None
@@ -82,21 +83,19 @@ class Squirrel(pygame.sprite.Sprite):
         self.can_climb = None
 
     def startright(self):
-        if not self.climbing:
-            self.goingRight = True
-            self.goingLeft = False
-            self.image = self.rightrunimg
-            self.hopstep = max(self.hopstep, 0)
+        self.goingRight = True
+        self.goingLeft = False
+        self.image = self.rightrunimg
+        self.hopstep = max(self.hopstep, 0)
 
     def stopright(self):
         self.goingRight = False
 
     def startleft(self):
-        if not self.climbing:
-            self.goingLeft = True
-            self.goingRight = False
-            self.image = self.leftrunimg
-            self.hopstep = max(self.hopstep, 0)
+        self.goingLeft = True
+        self.goingRight = False
+        self.image = self.leftrunimg
+        self.hopstep = max(self.hopstep, 0)
 
     def stopleft(self):
         self.goingLeft = False
@@ -120,18 +119,22 @@ class Squirrel(pygame.sprite.Sprite):
     def start_climbing(self):
         self.climbing = self.can_climb
 
+    def stop_climbing(self):
+        if self.z < 10:
+            self.climbing = None
+
     def say(self, message):
         SpeechBubble(self.forest, self, message)
 
     def update(self):
         if not self.climbing:
+            self.yoffset = 0
             if self.hopstep >= 0:
                 if self.hopstep == 0:
                     self.hoppingLeft = self.goingLeft
                     self.hoppingRight = self.goingRight
                     self.hoppingDown = self.goingDown
                     self.hoppingUp = self.goingUp
-                self.yoffset += math.sin(self.hopstep * math.pi / 10) * 10
                 self.hopstep += 1
                 self.yoffset -= math.sin(self.hopstep * math.pi / 10) * 10
                 if self.hopstep == 10:
@@ -169,20 +172,33 @@ class Squirrel(pygame.sprite.Sprite):
                         self.colliderect.top = tree.colliderect.bottom
                     elif self.hoppingLeft and (xoffset < yoffset or not (self.hoppingUp or self.hoppingDown)):
                         self.colliderect.left = tree.colliderect.right
-                        self.can_climb = [tree, "right"]
+                        self.climbing = [tree, "right"]
                     elif self.hoppingRight and (xoffset < yoffset or not (self.hoppingUp or self.hoppingDown)):
                         self.colliderect.right = tree.colliderect.left
-                        self.can_climb = [tree, "left"]
+                        self.climbing = [tree, "left"]
             self.x, self.y = self.colliderect.topleft
         else:
-            if self.goingUp:
-                self.y -= 2
-                self.image = pygame.transform.rotate(self.rightrunimg, 90)
+            if self.goingRight:
                 if self.climbing[1] == "right":
-                    self.image = pygame.transform.flip(self.image, True, False)
-            elif self.goingDown:
-                self.y += 2
-                self.image = pygame.transform.rotate(self.leftrunimg, 90)
+                    self.z -= 2
+                    self.image = pygame.transform.rotate(self.rightrunimg, -90)
+                    if self.z <= 0:
+                        self.climbing = None
+                        self.image = self.rightrunimg
+                else:
+                    if self.z < self.climbing[0].height - 50:
+                        self.z += 2
+                    self.image = pygame.transform.rotate(self.rightrunimg, 90)
+            elif self.goingLeft:
                 if self.climbing[1] == "right":
-                    self.image = pygame.transform.flip(self.image, True, False)
+                    if self.z < self.climbing[0].height - 50:
+                        self.z += 2
+                    self.image = pygame.transform.rotate(self.leftrunimg, -90)
+                else:
+                    self.z -= 2
+                    self.image = pygame.transform.rotate(self.leftrunimg, 90)
+                    if self.z <= 0:
+                        self.climbing = None
+                        self.image = self.leftrunimg
+            self.yoffset = -self.z
         self.rect = pygame.Rect(self.x + self.xoffset, self.y + self.yoffset, 18, 18)

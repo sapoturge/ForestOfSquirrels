@@ -26,8 +26,11 @@ def run_game():
                     s.startup()
                 elif event.key == pygame.K_DOWN:
                     s.startdown()
-                elif event.key == pygame.K_SPACE:
-                    s.start_climbing()
+                    # elif event.key == pygame.K_SPACE:
+                    #     if s.climbing:
+                    #         s.stop_climbing()
+                    #     else:
+                    #         s.start_climbing()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     s.stopleft()

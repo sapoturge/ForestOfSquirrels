@@ -6,6 +6,7 @@ This is a game with squirrels in it. More details will be added when we figure t
 ### To Play
 
 Arrow keys to hop.
+Run into the sides of trees to begin climbing them.
 
 ### To Run
 
