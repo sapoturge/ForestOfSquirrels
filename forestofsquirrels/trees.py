@@ -16,6 +16,7 @@ class Tree(pygame.sprite.Sprite):
         self.colliderect = self.rect.copy()
         self.colliderect.height = depth
         self.colliderect.width = width
+        self.holes = []
 
     def update(self):
         self.rect.x = self.x - self.width / 2
@@ -24,8 +25,29 @@ class Tree(pygame.sprite.Sprite):
 
     @classmethod
     def create_tree(cls, forest, x, y, name):
-        with open("forestofsquirrels/areas/{}.tree".format(name)) as treefile:
+        with open("forestofsquirrels/world/trees/{}.tree".format(name)) as treefile:
             lines = [l.strip() for l in treefile.readlines()]
             filename = lines[0]
             trunk_width, trunk_depth, trunk_height = lines[1].split(",")
-            return cls(forest, filename, x, y, int(trunk_width), int(trunk_depth), int(trunk_height))
+            tree = cls(forest, filename, x, y, int(trunk_width), int(trunk_depth), int(trunk_height))
+            mode = None
+            for line in lines[2:]:
+                if line == "HOLES:":
+                    mode = "hole"
+                elif line == "SQUIRRELS:":
+                    mode = "squirrel"
+                elif mode == "squirrel":
+                    squirrel, side, z = line.split(",")
+                    import forestofsquirrels.squirrels
+                    Squirrel = getattr(forestofsquirrels.squirrels, squirrel)
+                    if side == "right":
+                        sx = x + int(trunk_width) / 2
+                    else:
+                        sx = x - int(trunk_width) / 2
+                    s = Squirrel(forest, sx, y)
+                    s.z = z
+                    s.climbing = [tree, side]
+                elif mode == "hole":
+                    side, bottom, top, area = line.split(",")
+                    tree.holes.append((side, int(bottom), int(top), area))
+        return tree
