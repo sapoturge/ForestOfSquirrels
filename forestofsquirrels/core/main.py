@@ -9,9 +9,9 @@ def run_game():
     window = pygame.display.set_mode((640, 480))
     clock = pygame.time.Clock()
     forest = Forest()
-    s = Player(forest, 320, 240)
     Seller(forest, 25, 25)
-    Tree(forest, 200, 600)
+    Tree.create_tree(forest, 640, 480, "home")
+    s = forest.player
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
