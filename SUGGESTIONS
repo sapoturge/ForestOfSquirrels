@@ -5,3 +5,6 @@ Update graphics.
 Allow interaction between squirrels.
 Create areas for world generation.
 Randomly generate world.
+Configure/standardize tree trunk bounding box.
+Allow saving game.
+Make this 3d.
