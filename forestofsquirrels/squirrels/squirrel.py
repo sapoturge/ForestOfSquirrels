@@ -59,6 +59,7 @@ class Squirrel(pygame.sprite.Sprite):
         self.y = y
         self.xoffset = 0
         self.yoffset = 0
+        self.climbing = False
         self.hoppingLeft = False
         self.hoppingRight = False
         self.hoppingUp = False
@@ -70,6 +71,8 @@ class Squirrel(pygame.sprite.Sprite):
         self.hopstep = -1
         self.leftimg = pygame.image.load("forestofsquirrels/graphics/squirrel.png").convert_alpha()
         self.rightimg = pygame.transform.flip(self.leftimg, True, False)
+        self.leftrunimg = pygame.image.load("forestofsquirrels/graphics/runningsquirrel.png").convert_alpha()
+        self.rightrunimg = pygame.transform.flip(self.leftrunimg, True, False)
         self.image = self.leftimg
         self.rect = self.image.get_rect()
         self.colliderect = self.rect
@@ -80,7 +83,7 @@ class Squirrel(pygame.sprite.Sprite):
     def startright(self):
         self.goingRight = True
         self.goingLeft = False
-        self.image = self.rightimg
+        self.image = self.rightrunimg
         self.hopstep = max(self.hopstep, 0)
 
     def stopright(self):
@@ -89,7 +92,7 @@ class Squirrel(pygame.sprite.Sprite):
     def startleft(self):
         self.goingLeft = True
         self.goingRight = False
-        self.image = self.leftimg
+        self.image = self.leftrunimg
         self.hopstep = max(self.hopstep, 0)
 
     def stopleft(self):
@@ -128,6 +131,10 @@ class Squirrel(pygame.sprite.Sprite):
                 if self.goingRight or self.goingLeft or self.goingUp or self.goingDown:
                     self.hopstep = 0
                 else:
+                    if self.hoppingLeft:
+                        self.image = self.leftimg
+                    elif self.hoppingRight:
+                        self.image = self.rightimg
                     self.hopstep = -1
                     self.hoppingLeft = False
                     self.hoppingRight = False
