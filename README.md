@@ -34,6 +34,8 @@ Make sure all dependencies are installed.
 9. Create a pull request.
 10. Repeat from step 2
 
+*Note: Steps 3-5 and 7 can be skipped.
+
 ## Dependencies
 
 + Python (Tested with 3.5 and 2.7, but should work for other versions)
@@ -43,4 +45,4 @@ Make sure all dependencies are installed.
 
 Current members:
 
-![John Hiatt](https://github.com/FroggiesareFluffy/ForestOfSquirrels/blob/development/forestofsquirrels/graphics/squirrel.png?raw=true)John Hiatt (FroggiesAreFluffy)
+![John Hiatt](https://avatars1.githubusercontent.com/u/13472653?v=3&amp;u=193b33a802e614bd43a707c09f545101b476917d&amp;s=140)John Hiatt (FroggiesAreFluffy)
