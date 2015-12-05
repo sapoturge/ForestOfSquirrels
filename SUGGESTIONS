@@ -1,3 +1,7 @@
 Allow climbing trees.
 Add branches to trees.
 Update graphics.
+ - Include running and angle views for squirrels.
+Allow interaction between squirrels.
+Create areas for world generation.
+Randomly generate world.
