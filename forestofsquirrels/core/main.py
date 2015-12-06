@@ -1,10 +1,14 @@
 import pygame
+from forestofsquirrels.squirrels import Player
 from forestofsquirrels.core.forest import Forest
 from forestofsquirrels.trees import Tree
 
 
-def load_area(area_name):
-    forest = Forest()
+def load_area(area_name, forest=None):
+    if forest is None:
+        forest = Forest()
+    else:
+        forest.__init__()
     with open("forestofsquirrels/world/areas/{}.area".format(area_name)) as area:
         lines = [l.strip() for l in area.readlines()]
         width, height = lines[0].split(",")
@@ -14,10 +18,14 @@ def load_area(area_name):
         for line in lines[1:]:
             if line == "TREES:":
                 mode = "tree"
+            elif line == "CONNECTIONS:":
+                mode = "connection"
             elif mode == "tree":
-                print line
                 tree, x, y = line.split(",")
                 Tree.create_tree(forest, int(x), int(y), tree)
+            elif mode == "connection":
+                side, area = line.split(",")
+                forest.connections[side] = area
     return forest
 
 
@@ -52,6 +60,51 @@ def run_game():
                     s.stopup()
                 elif event.key == pygame.K_DOWN:
                     s.stopdown()
+
+        if s.x < 0:
+            if "left" in forest.connections:
+                load_area(forest.connections["left"], forest)
+                for spr in forest.sprites():
+                    if isinstance(spr, Player):
+                        spr.kill()
+                s.add(forest)
+                forest.add(s)
+                s.x = forest.width
+            else:
+                s.x = 0
+        elif s.x > forest.width:
+            if "right" in forest.connections:
+                load_area(forest.connections["right"], forest)
+                for spr in forest.sprites():
+                    if isinstance(spr, Player):
+                        spr.kill()
+                s.add(forest)
+                forest.add(s)
+                s.x = 0
+            else:
+                s.x = forest.width
+        if s.y < 0:
+            if "top" in forest.connections:
+                load_area(forest.connections["top"], forest)
+                for spr in forest.sprites():
+                    if isinstance(spr, Player):
+                        spr.kill()
+                s.add(forest)
+                forest.add(s)
+                s.y = forest.height
+            else:
+                s.y = 0
+        elif s.y > forest.height:
+            if "bottom" in forest.connections:
+                load_area(forest.connections["bottom"], forest)
+                for spr in forest.sprites():
+                    if isinstance(spr, Player):
+                        spr.kill()
+                s.add(forest)
+                forest.add(s)
+                s.y = 0
+            else:
+                s.y = forest.height
         window.fill((0, 128, 0))
         forest.update()
         forest.draw(window)
