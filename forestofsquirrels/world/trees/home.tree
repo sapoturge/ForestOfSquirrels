@@ -1,6 +1,6 @@
 home.png
 50,30,200
 HOLES:
-right,107,130,home
+right,77,130,home
 SQUIRRELS:
-Player,right,120
+Player,right,107

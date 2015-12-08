@@ -143,7 +143,7 @@ class Squirrel(pygame.sprite.Sprite):
                     self.hoppingDown = self.goingDown
                     self.hoppingUp = self.goingUp
                 self.hopstep += 1
-                self.yoffset = -math.sin(self.hopstep * math.pi / 10) * 10
+                self.z = math.sin(self.hopstep * math.pi / 10) * 10
                 if self.hopstep == 10:
                     if self.goingRight or self.goingLeft or self.goingUp or self.goingDown:
                         self.hopstep = 0
@@ -207,5 +207,5 @@ class Squirrel(pygame.sprite.Sprite):
                     if self.z <= 18:
                         self.climbing = None
                         self.image = self.leftrunimg
-            self.yoffset = -self.z + 18
+        self.yoffset = -self.z
         self.rect = pygame.Rect(self.x + self.xoffset, self.y + self.yoffset, 18, 18)
