@@ -7,20 +7,15 @@ This is a game with squirrels in it. More details will be added when we figure t
 
 Arrow keys to hop.
 Run into the sides of trees to begin climbing them.
+Use space to go into and out of holes in trees.
 
 ### To Run
 
-Make sure all dependencies are installed.
-
-#### From zip
-1. Open a terminal/command prompt window.
-2. Navigate to where you put the zip file.
-3. Type `python ForestOfSquirrels.zip`
-
-#### From source
-1. Open a terminal/command prompt window.
-2. Navigate to where you unpacked the source.
-3. Type `python ForestOfSquirrels/__main__.py`
+1. Make sure all dependencies are installed.
+2. Unpack the zip file.
+3. Open a terminal/command prompt window.
+4. Navigate to where you unpacked the source.
+5. Type `python ForestOfSquirrels/__main__.py`
 
 ### To Contribute
 
