@@ -50,7 +50,7 @@ def run_game():
                 elif event.key == pygame.K_DOWN:
                     s.startdown()
                 elif event.key == pygame.K_SPACE:
-                    s.enter_hole(window, clock)
+                    s.on_space(window, clock)
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     s.stopleft()
