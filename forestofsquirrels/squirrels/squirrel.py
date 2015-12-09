@@ -132,10 +132,11 @@ class Squirrel(pygame.sprite.Sprite):
             for hole in self.climbing[0].holes:
                 if hole[0] == self.climbing[1] and hole[1] < self.z < hole[2]:
                     area = __import__("forestofsquirrels.world.rooms." + hole[3], fromlist=["main"])
-                    area.main(window, clock)
+                    area.main(self, window, clock)
                     return True
             if self.z == self.climbing[0].maxheight:
                 self.acorn = True
+                print("Picked Acorn!")
         return False
 
     def update(self):
@@ -200,11 +201,15 @@ class Squirrel(pygame.sprite.Sprite):
                 else:
                     if self.z < self.climbing[0].maxheight:
                         self.z += 2
+                    else:
+                        self.z = self.climbing[0].maxheight
                     self.image = pygame.transform.rotate(self.rightrunimg, 90)
             elif self.goingLeft:
                 if self.climbing[1] == "right":
                     if self.z < self.climbing[0].maxheight:
                         self.z += 2
+                    else:
+                        self.z = self.climbing[0].maxheight
                     self.image = pygame.transform.rotate(self.leftrunimg, -90)
                 else:
                     self.z -= 2
