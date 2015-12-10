@@ -3,16 +3,43 @@ from forestofsquirrels.world.forest import Forest, Area
 
 
 def save(name, squirrel):
-    with open("/saves/{}.fos".format(name)) as savefile:
+    with open("saves/{}.fos".format(name)) as savefile:
         savefile.write()
+
+
+def load(name):
+    with open("saves/{}.fos".format(name)) as savefile:
+        seed, x, y, acorn, health = savefile.readline().split(",")
+        forest = Forest()
+        area = Area(forest, 0, 0, "town")
+        area.update()
+        x = int(x)
+        y = int(y)
+        while not area.rect.collidepoint(x, y):
+            if area.x > x:
+                area = Area(forest, area.realx - 1, area.realy, "forest")
+                area.update()
+            elif area.x + area.width < x:
+                area = Area(forest, area.realx + 1, area.realy, "forest")
+                area.update()
+            if area.y > y:
+                area = Area(forest, area.realx, area.realy - 1, "forest")
+                area.update()
+            elif area.y + area.height < y:
+                area = Area(forest, area.realx, area.realy + 1, "forest")
+                area.update()
+        forest.player.x = x
+        forest.player.y = y
+        forest.player.acorn = bool(int(acorn))
+        forest.player.health = int(health)
+    return forest
 
 
 def run_game():
     pygame.display.set_caption("Forest of Squirrels")
     window = pygame.display.set_mode((640, 480))
     clock = pygame.time.Clock()
-    forest = Forest()
-    Area(forest, 0, 0, "town")
+    forest = load("example")
     s = forest.player
     while True:
         for event in pygame.event.get():
@@ -89,6 +116,7 @@ def run_game():
         forest.draw(window)
         clock.tick(30)
         pygame.display.update()
+
 
 if __name__ == "__main__":
     run_game()
