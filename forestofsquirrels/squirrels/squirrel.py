@@ -1,6 +1,7 @@
-import pygame
 import math
-from forestofsquirrels.trees import Tree
+import pygame
+import forestofsquirrels.trees
+
 
 pygame.init()
 
@@ -173,7 +174,7 @@ class Squirrel(pygame.sprite.Sprite):
                 self.y += 2
             self.colliderect = pygame.Rect(self.x, self.y, 18, 18)
             self.can_climb = None
-            for tree in filter(lambda s: isinstance(s, Tree), self.forest.sprites()):
+            for tree in filter(lambda s: isinstance(s, forestofsquirrels.trees.Tree), self.forest.sprites()):
                 if tree.colliderect.colliderect(self.colliderect):
                     overlap = self.colliderect.union(tree.colliderect)
                     xoffset, yoffset = overlap.width, overlap.height

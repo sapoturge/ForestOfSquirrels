@@ -1,5 +1,5 @@
-import sys
 import pygame
+import sys
 
 
 def main(squirrel, window, clock):

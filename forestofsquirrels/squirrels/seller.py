@@ -1,5 +1,6 @@
-from .squirrel import Squirrel
 import math
+
+from .squirrel import Squirrel
 
 
 class Seller(Squirrel):
