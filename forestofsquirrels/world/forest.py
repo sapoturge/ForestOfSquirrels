@@ -1,4 +1,5 @@
 import pygame
+import random
 
 import forestofsquirrels.squirrels
 import forestofsquirrels.trees
@@ -26,7 +27,15 @@ class Area(pygame.sprite.Sprite, pygame.sprite.AbstractGroup):
                     mode = "connection"
                 elif mode == "tree":
                     tree, tx, ty = line.split(",")
-                    forestofsquirrels.trees.Tree.create_tree(self, int(tx), int(ty), tree)
+                    if tx == "random":
+                        tx = random.randint(0, self.width)
+                    else:
+                        tx = int(tx)
+                    if ty == "random":
+                        ty = random.randint(0, self.height)
+                    else:
+                        ty = int(ty)
+                    forestofsquirrels.trees.Tree.create_tree(self, tx, ty, tree)
                 elif mode == "connection":
                     side, area = line.split(",")
                     self.connections[side] = area
@@ -53,8 +62,6 @@ class Area(pygame.sprite.Sprite, pygame.sprite.AbstractGroup):
                 for s in self.sprites():
                     self.forest.remove(s)
                 self.dead = True
-                print("Dead at {}, {} ({}, {})!".format(self.x, self.y, self.realx, self.realy))
-                print(bigrect)
         elif self.dead:
             for s in self.sprites():
                 self.forest.add(s)
@@ -68,6 +75,14 @@ class Area(pygame.sprite.Sprite, pygame.sprite.AbstractGroup):
                 Area(self.forest, self.realx + 1, self.realy, "forest").update()
             elif (self.realx - 1, self.realy) not in self.forest.areas:
                 Area(self.forest, self.realx - 1, self.realy, "forest").update()
+            if (self.realx + 1, self.realy + 1) not in self.forest.areas:
+                Area(self.forest, self.realx + 1, self.realy + 1, "forest").update()
+            elif (self.realx - 1, self.realy - 1) not in self.forest.areas:
+                Area(self.forest, self.realx - 1, self.realy - 1, "forest").update()
+            elif (self.realx + 1, self.realy - 1) not in self.forest.areas:
+                Area(self.forest, self.realx + 1, self.realy - 1, "forest").update()
+            elif (self.realx - 1, self.realy + 1) not in self.forest.areas:
+                Area(self.forest, self.realx - 1, self.realy + 1, "forest").update()
 
     def add_internal(self, other):
         if isinstance(other, pygame.sprite.AbstractGroup):

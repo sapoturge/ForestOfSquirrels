@@ -2,6 +2,11 @@ import pygame
 from forestofsquirrels.world.forest import Forest, Area
 
 
+def save(name, squirrel):
+    with open("/saves/{}.fos".format(name)) as savefile:
+        savefile.write()
+
+
 def run_game():
     pygame.display.set_caption("Forest of Squirrels")
     window = pygame.display.set_mode((640, 480))
