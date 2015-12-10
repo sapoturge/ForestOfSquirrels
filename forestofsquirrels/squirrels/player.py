@@ -6,8 +6,8 @@ class Player(Squirrel):
     """
 
     def __init__(self, forest, *args, **kwargs):
-        forest.player = self
         Squirrel.__init__(self, forest, *args, **kwargs)
+        self.forest.player = self
 
     def update(self):
         Squirrel.update(self)
