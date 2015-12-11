@@ -82,6 +82,7 @@ class Squirrel(pygame.sprite.Sprite):
         self.forest = forest
         self.can_climb = None
         self.acorn = False
+        self.health = 8
 
     def startright(self):
         self.goingRight = True
