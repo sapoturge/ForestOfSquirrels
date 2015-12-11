@@ -3,8 +3,8 @@ from forestofsquirrels.world.forest import Forest, Area
 
 
 def save(name, squirrel):
-    with open("saves/{}.fos".format(name)) as savefile:
-        savefile.write()
+    with open("saves/{}.fos".format(name), "w") as savefile:
+        savefile.write("0,{},{},{},{}".format(squirrel.x, squirrel.y, int(squirrel.acorn), squirrel.health))
 
 
 def load(name):
@@ -30,6 +30,8 @@ def load(name):
                 area.update()
         forest.player.x = x
         forest.player.y = y
+        forest.player.climbing = None
+        forest.player.z = 0
         forest.player.acorn = bool(int(acorn))
         forest.player.health = int(health)
     return forest
@@ -39,7 +41,7 @@ def run_game():
     pygame.display.set_caption("Forest of Squirrels")
     window = pygame.display.set_mode((640, 480))
     clock = pygame.time.Clock()
-    forest = load("example")
+    forest = load("save")
     s = forest.player
     while True:
         for event in pygame.event.get():
@@ -57,6 +59,8 @@ def run_game():
                     s.startdown()
                 elif event.key == pygame.K_SPACE:
                     s.on_space(window, clock)
+                elif event.key == pygame.K_s:
+                    save("save", s)
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     s.stopleft()
