@@ -137,7 +137,6 @@ class Squirrel(pygame.sprite.Sprite):
                     return True
             if self.z == self.climbing[0].maxheight:
                 self.acorn = True
-                print("Picked Acorn!")
         return False
 
     def update(self):

@@ -16,8 +16,6 @@ def main(squirrel, window, clock):
                 if squirrel.acorn:
                     main.acorns += 1
                     squirrel.acorn = False
-                    print("Stored Acorn!")
-
         pygame.display.update()
         clock.tick(30)
 
