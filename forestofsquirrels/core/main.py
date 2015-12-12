@@ -2,6 +2,7 @@ import pygame
 from forestofsquirrels.squirrels import Player
 from forestofsquirrels.core.forest import Forest
 from forestofsquirrels.trees import Tree
+from forestofsquirrels import ui
 
 
 def load_area(area_name, forest=None):
@@ -35,6 +36,7 @@ def run_game():
     clock = pygame.time.Clock()
     forest = load_area("town")
     s = forest.player
+    ui.create_ui(forest)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
