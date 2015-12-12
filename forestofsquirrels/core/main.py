@@ -1,5 +1,6 @@
 import pygame
 from forestofsquirrels.world.forest import Forest, Area
+from forestofsquirrels import ui
 
 
 def save(name, squirrel):
