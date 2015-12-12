@@ -83,6 +83,7 @@ class Squirrel(pygame.sprite.Sprite):
         self.forest = forest
         self.can_climb = None
         self.acorn = False
+        self.health = 8
 
     def startright(self):
         self.goingRight = True
@@ -137,7 +138,6 @@ class Squirrel(pygame.sprite.Sprite):
                     return True
             if self.z == self.climbing[0].maxheight:
                 self.acorn = True
-                print("Picked Acorn!")
         return False
 
     def update(self):

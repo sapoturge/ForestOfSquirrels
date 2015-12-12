@@ -43,6 +43,7 @@ def run_game():
     clock = pygame.time.Clock()
     forest = load("save")
     s = forest.player
+    ui.create_ui(forest)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
