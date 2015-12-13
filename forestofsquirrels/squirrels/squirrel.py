@@ -2,7 +2,6 @@ import math
 import pygame
 import forestofsquirrels.trees
 
-
 pygame.init()
 
 
@@ -82,7 +81,7 @@ class Squirrel(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, forest)
         self.forest = forest
         self.can_climb = None
-        self.acorn = False
+        self.inventory = [None, None, None, None]
         self.health = 8
 
     def startright(self):
@@ -129,16 +128,47 @@ class Squirrel(pygame.sprite.Sprite):
     def say(self, message):
         SpeechBubble(self.forest, self, message)
 
-    def on_space(self, window, clock):
+    def pick_acorn(self, window, clock):
         if self.climbing:
             for hole in self.climbing[0].holes:
                 if hole[0] == self.climbing[1] and hole[1] < self.z < hole[2]:
                     area = __import__("forestofsquirrels.world.rooms." + hole[3], fromlist=["main"])
                     area.main(self, window, clock)
                     return True
-            if self.z == self.climbing[0].maxheight:
-                self.acorn = True
+            if self.z == self.climbing[0].maxheight and self.inventory[0] is None:
+                self.inventory[0] = "acorn"
         return False
+
+    def enter_hole(self, window, clock):
+        if self.climbing:
+            for hole in self.climbing[0].holes:
+                if hole[0] == self.climbing[1] and hole[1] < self.z < hole[2]:
+                    area = __import__("forestofsquirrels.world.rooms." + hole[3], fromlist=["main"])
+                    area.main(self, window, clock)
+                    return True
+        return False
+
+    def eat(self):
+        if self.inventory[0] == "acorn":
+            self.inventory[0] = None
+            self.health += 1
+
+    def wear(self):
+        if ((self.inventory[3] and self.inventory[0] is None) or (
+                            self.inventory[3] is None and self.inventory[0] and self.inventory[0].endswith(" hat"))):
+            self.inventory[0], self.inventory[3] = self.inventory[3], self.inventory[0]
+
+    def store_left(self):
+        print (self.inventory[0], self.inventory[2])
+        if ((self.inventory[2] and self.inventory[0] is None) or (
+                        self.inventory[2] is None and self.inventory[0] is "acorn")):
+            self.inventory[0], self.inventory[2] = self.inventory[2], self.inventory[0]
+
+    def store_right(self):
+        print (self.inventory[0], self.inventory[1])
+        if ((self.inventory[1] and self.inventory[0] is None) or (
+                        self.inventory[1] is None and self.inventory[0] is "acorn")):
+            self.inventory[0], self.inventory[1] = self.inventory[1], self.inventory[0]
 
     def update(self):
         if not self.climbing:

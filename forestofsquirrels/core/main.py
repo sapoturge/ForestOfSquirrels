@@ -60,9 +60,17 @@ def run_game():
                 elif event.key == pygame.K_DOWN:
                     s.startdown()
                 elif event.key == pygame.K_SPACE:
-                    s.on_space(window, clock)
+                    s.pick_acorn(window, clock)
                 elif event.key == pygame.K_s:
                     save("save", s)
+                elif event.key == pygame.K_e and s.acorn:
+                    s.eat()
+                elif event.key == pygame.K_w:
+                    s.wear()
+                elif event.key == pygame.K_a:
+                    s.store_left()
+                elif event.key == pygame.K_d:
+                    s.store_right()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     s.stopleft()
@@ -72,56 +80,11 @@ def run_game():
                     s.stopup()
                 elif event.key == pygame.K_DOWN:
                     s.stopdown()
-
-        # if s.x < 0:
-        #     if "left" in forest.connections:
-        #         load_area(forest.connections["left"], forest)
-        #         for spr in forest.sprites():
-        #             if isinstance(spr, Player):
-        #                 spr.kill()
-        #         s.add(forest)
-        #         forest.add(s)
-        #         s.x = forest.width
-        #     else:
-        #         s.x = 0
-        # elif s.x > forest.width:
-        #     if "right" in forest.connections:
-        #         load_area(forest.connections["right"], forest)
-        #         for spr in forest.sprites():
-        #             if isinstance(spr, Player):
-        #                 spr.kill()
-        #         s.add(forest)
-        #         forest.add(s)
-        #         s.x = 0
-        #     else:
-        #         s.x = forest.width
-        # if s.y < 0:
-        #     if "top" in forest.connections:
-        #         load_area(forest.connections["top"], forest)
-        #         for spr in forest.sprites():
-        #             if isinstance(spr, Player):
-        #                 spr.kill()
-        #         s.add(forest)
-        #         forest.add(s)
-        #         s.y = forest.height
-        #     else:
-        #         s.y = 0
-        # elif s.y > forest.height:
-        #     if "bottom" in forest.connections:
-        #         load_area(forest.connections["bottom"], forest)
-        #         for spr in forest.sprites():
-        #             if isinstance(spr, Player):
-        #                 spr.kill()
-        #         s.add(forest)
-        #         forest.add(s)
-        #         s.y = 0
-        #     else:
-        #         s.y = forest.height
         window.fill((0, 128, 0))
         forest.update()
         forest.draw(window)
         clock.tick(30)
-        pygame.display.update()
+        ui.update()
 
 
 if __name__ == "__main__":

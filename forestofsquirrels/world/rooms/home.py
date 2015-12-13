@@ -1,5 +1,6 @@
 import pygame
 import sys
+from forestofsquirrels import ui
 
 
 def main(squirrel, window, clock):
@@ -12,11 +13,14 @@ def main(squirrel, window, clock):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     return
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if squirrel.acorn:
+                elif event.key == pygame.K_s and squirrel.inventory[0] == "acorn":
                     main.acorns += 1
-                    squirrel.acorn = False
-        pygame.display.update()
+                    squirrel.inventory[0] = None
+                elif event.key == pygame.K_a:
+                    squirrel.store_left()
+                elif event.key == pygame.K_d:
+                    squirrel.store_right()
+        ui.update()
         clock.tick(30)
 
 
