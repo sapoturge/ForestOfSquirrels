@@ -84,8 +84,4 @@ def create_ui(forest):
 def update():
     HUD.update()
     HUD.draw(pygame.display.get_surface())
-    update.update()
-
-
-update.update = pygame.display.update
-pygame.display.update = update
+    pygame.display.update()

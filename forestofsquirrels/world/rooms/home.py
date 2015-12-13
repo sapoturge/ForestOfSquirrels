@@ -1,5 +1,6 @@
 import pygame
 import sys
+from forestofsquirrels import ui
 
 
 def main(squirrel, window, clock):
@@ -16,7 +17,7 @@ def main(squirrel, window, clock):
                 if squirrel.acorn:
                     main.acorns += 1
                     squirrel.acorn = False
-        pygame.display.update()
+        ui.update()
         clock.tick(30)
 
 
