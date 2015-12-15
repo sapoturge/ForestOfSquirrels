@@ -1,30 +1,36 @@
 import os
 
 
-class Item(object):
+class Item(type):
     items = []
     categories = {}
 
-    def __init__(self, filename):
+    def __new__(mcs, filename):
+        d = {}
         with open(filename) as itemfile:
-            self.name = itemfile.readline().strip()
-            self.image = itemfile.readline().strip()
+            d['name'] = itemfile.readline().strip()
+            d['image'] = itemfile.readline().strip()
             for line in itemfile.readlines():
                 if line.startswith("USE:"):
-                    self.use = line[4:].strip()
+                    d['use'] = line[4:].strip()
                 elif line.startswith("CATEGORY:"):
-                    self.category = line[9:].strip()
+                    d['category'] = line[9:].strip()
                 elif line.startswith("PRICE:"):
-                    self.category = line[6:].strip()
-                    if not self.category in Item.categories:
-                        Item.categories[self.category] = []
-                    Item.categories[self.category].append(self)
+                    d['price'] = line[6:].strip()
                 elif line.startswith("WEAR:"):
-                    self.wearable = bool(line[5:].strip())
-        Item.items.append(self)
+                    d['wearable'] = bool(line[5:].strip())
+        item = type.__new__(mcs, d['name'].replace(" ", ""), (object,), d)
+        Item.items.append(item)
+        if d['category'] not in Item.categories:
+            Item.categories[d['category']] = []
+        Item.categories[d['category']].append(item)
 
 
 if not Item.items:
     path, dirs, files = os.walk("forestofsquirrels/items").next()
     for item in files:
         Item(os.path.join(path, item))
+
+all_items = Item.items
+categories = Item.categories
+print categories.keys()
