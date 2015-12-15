@@ -1,0 +1,7 @@
+Top Hat
+acorn.png
+CATEGORY:Wearable
+PRICE:2
+SLOT:head
+EQUIP:<squirel>.wear
+UNEQUIP:<squirrel>.wear
