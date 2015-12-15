@@ -60,9 +60,9 @@ def run_game():
                 elif event.key == pygame.K_DOWN:
                     s.startdown()
                 elif event.key == pygame.K_SPACE:
-                    s.pick_acorn(window, clock)
+                    s.enter_hole(window, clock)
                 elif event.key == pygame.K_s:
-                    save("save", s)
+                    s.pick_acorn()
                 elif event.key == pygame.K_e and s.acorn:
                     s.eat()
                 elif event.key == pygame.K_w:

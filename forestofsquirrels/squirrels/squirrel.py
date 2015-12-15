@@ -128,16 +128,10 @@ class Squirrel(pygame.sprite.Sprite):
     def say(self, message):
         SpeechBubble(self.forest, self, message)
 
-    def pick_acorn(self, window, clock):
+    def pick_acorn(self):
         if self.climbing:
-            for hole in self.climbing[0].holes:
-                if hole[0] == self.climbing[1] and hole[1] < self.z < hole[2]:
-                    area = __import__("forestofsquirrels.world.rooms." + hole[3], fromlist=["main"])
-                    area.main(self, window, clock)
-                    return True
             if self.z == self.climbing[0].maxheight and self.inventory[0] is None:
                 self.inventory[0] = "acorn"
-        return False
 
     def enter_hole(self, window, clock):
         if self.climbing:
