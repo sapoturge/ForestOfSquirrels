@@ -1,6 +1,7 @@
 import math
 import pygame
-import forestofsquirrels.trees
+from forestofsquirrels import trees
+from forestofsquirrels.core import items
 
 pygame.init()
 
@@ -131,7 +132,7 @@ class Squirrel(pygame.sprite.Sprite):
     def pick_acorn(self):
         if self.climbing:
             if self.z == self.climbing[0].maxheight and self.inventory[0] is None:
-                self.inventory[0] = "acorn"
+                self.inventory[0] = items.Acorn()
 
     def enter_hole(self, window, clock):
         if self.climbing:
@@ -143,25 +144,26 @@ class Squirrel(pygame.sprite.Sprite):
         return False
 
     def eat(self):
-        if self.inventory[0] == "acorn":
+        if isinstance(self.inventory[0], items.Acorn):
             self.inventory[0] = None
             self.health += 1
 
     def wear(self):
         if ((self.inventory[3] and self.inventory[0] is None) or (
-                            self.inventory[3] is None and self.inventory[0] and self.inventory[0].endswith(" hat"))):
+                            self.inventory[3] is None and self.inventory[0] and self.inventory[0].name.endswith(
+                        " Hat"))):
             self.inventory[0], self.inventory[3] = self.inventory[3], self.inventory[0]
 
     def store_left(self):
         print (self.inventory[0], self.inventory[2])
         if ((self.inventory[2] and self.inventory[0] is None) or (
-                        self.inventory[2] is None and self.inventory[0] is "acorn")):
+                        self.inventory[2] is None and isinstance(self.inventory[0], items.Acorn))):
             self.inventory[0], self.inventory[2] = self.inventory[2], self.inventory[0]
 
     def store_right(self):
         print (self.inventory[0], self.inventory[1])
         if ((self.inventory[1] and self.inventory[0] is None) or (
-                        self.inventory[1] is None and self.inventory[0] is "acorn")):
+                        self.inventory[1] is None and isinstance(self.inventory[0], items.Acorn))):
             self.inventory[0], self.inventory[1] = self.inventory[1], self.inventory[0]
 
     def update(self):
@@ -198,7 +200,7 @@ class Squirrel(pygame.sprite.Sprite):
                 self.y += 2
             self.colliderect = pygame.Rect(self.x, self.y, 18, 18)
             self.can_climb = None
-            for tree in filter(lambda s: isinstance(s, forestofsquirrels.trees.Tree), self.forest.sprites()):
+            for tree in filter(lambda s: isinstance(s, trees.Tree), self.forest.sprites()):
                 if tree.colliderect.colliderect(self.colliderect):
                     overlap = self.colliderect.union(tree.colliderect)
                     xoffset, yoffset = overlap.width, overlap.height

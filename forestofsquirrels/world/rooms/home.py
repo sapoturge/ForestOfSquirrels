@@ -1,6 +1,7 @@
 import pygame
 import sys
 from forestofsquirrels import ui
+from forestofsquirrels.core import items
 
 
 def main(squirrel, window, clock):
@@ -13,7 +14,7 @@ def main(squirrel, window, clock):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     return
-                elif event.key == pygame.K_s and squirrel.inventory[0] == "acorn":
+                elif event.key == pygame.K_s and isinstance(squirrel.inventory[0], items.Acorn):
                     main.acorns += 1
                     squirrel.inventory[0] = None
                 elif event.key == pygame.K_a:

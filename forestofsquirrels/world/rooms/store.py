@@ -30,8 +30,9 @@ def main(squirrel, window, clock):
 
 
 def draw_tabs(window, font, categories, current_category):
-    pygame.draw.rect(window, (128, 128, 255), (0, 0, 40, 480))
-    y = 2
+    pygame.draw.rect(window, (255, 255, 255), (0, 0, 640, 40))
+    pygame.draw.rect(window, (128, 128, 255), (0, 40, 40, 440))
+    y = 42
     rects = {}
     for c in categories.keys():
         color = (0, 0, 255) if c == current_category else (192, 192, 192)

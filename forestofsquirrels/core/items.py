@@ -1,11 +1,9 @@
 import os
 
 
-class Item(type):
-    items = []
-    categories = {}
-
-    def __new__(mcs, filename):
+class ItemType(type):
+    def __new__(mcs, name, bases, d):
+        filename = d.get("filename", "null.item")
         d = {}
         with open(filename) as itemfile:
             d['name'] = itemfile.readline().strip()
@@ -24,13 +22,32 @@ class Item(type):
         if d['category'] not in Item.categories:
             Item.categories[d['category']] = []
         Item.categories[d['category']].append(item)
+        return item
 
 
+class Item(object):
+    items = []
+    categories = {}
+
+
+class Acorn(Item):
+    __metaclass__ = ItemType
+    filename = os.path.abspath("forestofsquirrels/items/.base/acorn.item")
+
+
+def create_item(filename):
+    if "acorn" in filename:
+        bases = (Acorn,)
+    else:
+        bases = (Item,)
+    return ItemType("a", bases, {"filename": filename})
+
+
+all_items = []
+categories = {}
 if not Item.items:
     path, dirs, files = os.walk("forestofsquirrels/items").next()
     for item in files:
-        Item(os.path.join(path, item))
-
-all_items = Item.items
-categories = Item.categories
-print categories.keys()
+        i = create_item(os.path.join(path, item))
+        all_items.append(i)
+        categories[i.category].append(i)
