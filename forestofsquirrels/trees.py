@@ -6,6 +6,8 @@ class Tree(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, forest)
         self.x = x
         self.y = y
+        self.original_x = x
+        self.original_y = y
         self.width = width
         self.depth = depth
         self.maxheight = height

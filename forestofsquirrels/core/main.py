@@ -1,6 +1,8 @@
 import pygame
+import os
 from forestofsquirrels.world.forest import Forest, Area
 from forestofsquirrels import ui
+from forestofsquirrels import squirrels
 
 
 def save(name, squirrel):
@@ -11,6 +13,8 @@ def save(name, squirrel):
 def load(name):
     with open("saves/{}.fos".format(name)) as savefile:
         seed, x, y, acorn, health = savefile.readline().split(",")
+        from forestofsquirrels.world import generator
+        generator.set_seed(int(seed))
         forest = Forest()
         area = Area(forest, 0, 0, "town")
         area.update()
@@ -29,22 +33,35 @@ def load(name):
             elif area.y + area.height < y:
                 area = Area(forest, area.realx, area.realy + 1, "forest")
                 area.update()
-        forest.player.x = x
-        forest.player.y = y
-        forest.player.climbing = None
-        forest.player.z = 0
+        forest.player = squirrels.Player(forest, x, y)
         forest.player.acorn = bool(int(acorn))
         forest.player.health = int(health)
     return forest
 
 
+def show_load_screen():
+    import os
+    os.environ["SDL_VIDEO_CENTERED"] = "1"
+    pygame.init()
+    window = pygame.display.set_mode((640, 480), pygame.NOFRAME)
+    window.fill((0, 192, 0))
+    pygame.display.update()
+    os.environ["SDL_VIDEO_CENTERED"] = ""
+
+
 def run_game():
-    pygame.display.set_caption("Forest of Squirrels")
-    window = pygame.display.set_mode((640, 480))
-    clock = pygame.time.Clock()
+    show_load_screen()
     forest = load("save")
     s = forest.player
     ui.create_ui(forest)
+    for area in os.walk("forestofsquirrels/world/areas").next()[2]:
+        Area.parse_file(area[:-5])
+    pygame.display.quit()
+    pygame.display.init()
+    pygame.display.set_caption("Forest of Squirrels")
+    window = pygame.display.set_mode((640, 480))
+    clock = pygame.time.Clock()
+    print forest.sprites()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

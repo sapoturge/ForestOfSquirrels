@@ -1,0 +1,12 @@
+980,640
+TREES:
+tree,random,random
+tree,random,random
+tree,random,random
+tree,random,random
+tree,random,random
+CONNECTIONS:
+right,forest
+left,forest
+top,forest
+bottom,forest

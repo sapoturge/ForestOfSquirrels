@@ -3,9 +3,13 @@ import random
 
 import forestofsquirrels.squirrels
 import forestofsquirrels.trees
+from forestofsquirrels.world import generator
 
 
 class Area(pygame.sprite.Sprite, pygame.sprite.AbstractGroup):
+    area_types = {}
+    areas = {}
+
     def __init__(self, forest, x, y, area_name):
         self.forest = forest
         self.connections = {}
@@ -14,31 +18,13 @@ class Area(pygame.sprite.Sprite, pygame.sprite.AbstractGroup):
         self.forest.areas[x, y] = self
         pygame.sprite.Sprite.__init__(self, forest)
         pygame.sprite.AbstractGroup.__init__(self)
-        with open("forestofsquirrels/world/areas/{}.area".format(area_name)) as area:
-            lines = [l.strip() for l in area.readlines()]
-            width, height = lines[0].split(",")
-            self.width = int(width)
-            self.height = int(height)
-            mode = None
-            for line in lines[1:]:
-                if line == "TREES:":
-                    mode = "tree"
-                elif line == "CONNECTIONS:":
-                    mode = "connection"
-                elif mode == "tree":
-                    tree, tx, ty = line.split(",")
-                    if tx == "random":
-                        tx = random.randint(0, self.width)
-                    else:
-                        tx = int(tx)
-                    if ty == "random":
-                        ty = random.randint(0, self.height)
-                    else:
-                        ty = int(ty)
-                    forestofsquirrels.trees.Tree.create_tree(self, tx, ty, tree)
-                elif mode == "connection":
-                    side, area = line.split(",")
-                    self.connections[side] = area
+        if area_name not in Area.area_types:
+            Area.parse_file(area_name)
+        self.width = Area.area_types[area_name]["width"]
+        self.height = Area.area_types[area_name]["height"]
+        self.connections = Area.area_types[area_name]["connections"]
+        for tx, ty, ttype in Area.area_types[area_name]["trees"]:
+            forestofsquirrels.trees.Tree.create_tree(self, tx, ty, ttype)
         self.x = x * self.width
         self.y = y * self.height
         for s in self.sprites():
@@ -53,6 +39,36 @@ class Area(pygame.sprite.Sprite, pygame.sprite.AbstractGroup):
         if hasattr(self, "player"):
             self.forest.player = self.player
             self.player.forest = self.forest
+        Area.areas[x, y] = self
+
+    @classmethod
+    def parse_file(cls, area_name):
+        cls.area_types[area_name] = {"trees": [], "connections": {}}
+        with open("forestofsquirrels/world/areas/{}.area".format(area_name)) as area:
+            lines = [l.strip() for l in area.readlines()]
+            width, height = (int(x) for x in lines[0].split(","))
+            mode = None
+            for line in lines[1:]:
+                if line == "TREES:":
+                    mode = "tree"
+                elif line == "CONNECTIONS:":
+                    mode = "connection"
+                elif mode == "tree":
+                    tree, tx, ty = line.split(",")
+                    if tx == "random":
+                        tx = random.randint(0, width)
+                    else:
+                        tx = int(tx)
+                    if ty == "random":
+                        ty = random.randint(0, height)
+                    else:
+                        ty = int(ty)
+                    cls.area_types[area_name]["trees"].append((tx, ty, tree))
+                elif mode == "connection":
+                    side, ctype = line.split(",")
+                    cls.area_types[area_name]["connections"][side] = ctype
+        cls.area_types[area_name]["width"] = int(width)
+        cls.area_types[area_name]["height"] = int(height)
 
     def update(self):
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -68,13 +84,18 @@ class Area(pygame.sprite.Sprite, pygame.sprite.AbstractGroup):
             self.dead = False
         if bigrect.contains(self.rect):
             if (self.realx, self.realy + 1) not in self.forest.areas:
-                Area(self.forest, self.realx, self.realy + 1, "forest").update()
+                Area(self.forest, self.realx, self.realy + 1,
+                     generator.connect(self, self.realx, self.realy + 1, "bottom")).update()
             elif (self.realx, self.realy - 1) not in self.forest.areas:
-                Area(self.forest, self.realx, self.realy - 1, "forest").update()
+                Area(self.forest, self.realx, self.realy - 1,
+                     generator.connect(self, self.realx, self.realy + 1, "bottom")).update()
             elif (self.realx + 1, self.realy) not in self.forest.areas:
-                Area(self.forest, self.realx + 1, self.realy, "forest").update()
+                Area(self.forest, self.realx + 1, self.realy,
+                     generator.connect(self, self.realx, self.realy + 1, "bottom")).update()
             elif (self.realx - 1, self.realy) not in self.forest.areas:
-                Area(self.forest, self.realx - 1, self.realy, "forest").update()
+                Area(self.forest, self.realx - 1, self.realy,
+                     generator.connect(self, self.realx, self.realy + 1, "bottom")).update()
+            '''
             if (self.realx + 1, self.realy + 1) not in self.forest.areas:
                 Area(self.forest, self.realx + 1, self.realy + 1, "forest").update()
             elif (self.realx - 1, self.realy - 1) not in self.forest.areas:
@@ -83,6 +104,7 @@ class Area(pygame.sprite.Sprite, pygame.sprite.AbstractGroup):
                 Area(self.forest, self.realx + 1, self.realy - 1, "forest").update()
             elif (self.realx - 1, self.realy + 1) not in self.forest.areas:
                 Area(self.forest, self.realx - 1, self.realy + 1, "forest").update()
+            '''
 
     def add_internal(self, other):
         if isinstance(other, pygame.sprite.AbstractGroup):

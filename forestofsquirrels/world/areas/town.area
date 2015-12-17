@@ -3,7 +3,7 @@ TREES:
 home,640,480
 store,120,300
 CONNECTIONS:
-left,town
-right,town
-top,town
-bottom,town
+left,forest
+right,forest
+top,forest
+bottom,forest
